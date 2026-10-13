@@ -1,0 +1,26 @@
+# The checks of GitScylla's live tests: one job passes, one fails on
+# the branch gs-topic, and one is always skipped.
+name: checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+passes:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This check passes."
+fails:
+    if: github.head_ref == 'gs-topic'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "This check fails on purpose."
+          exit 1
+skipped:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This check never runs."
